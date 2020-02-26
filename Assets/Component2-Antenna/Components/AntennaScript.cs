@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[SelectionBase]//Diverts the selection to this object
+[SelectionBase]
 public class AntennaScript : MonoBehaviour
 {
     [Header("Physics Parameters")]
     [SerializeField] private float springForce = 80.0f;
     [SerializeField] private float drag = 2.5f;
-    public float lenght;
+    public float length;
     
 	[Space(12)]
     //public Transform GeoParent;
     //public Transform endPosition;
 
-    Rigidbody SpringRB;
+    private Rigidbody SpringRB;
     private Vector3 LocalDistance;//Distance between the two points
     private Vector3 LocalVelocity;//Velocity converted to local space
     public Transform springTarget;
@@ -25,15 +25,17 @@ public class AntennaScript : MonoBehaviour
     void Start()
     {
         SpringRB = springObj.GetComponent<Rigidbody>();//Find the RigidBody component
-        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer = gameObject.GetComponentInChildren<LineRenderer>();
+        lineRenderer.useWorldSpace = true;
+        PlaceObjectCorrectLength();
         springObj.transform.parent = null;//Take the spring out of the hierarchy
     }
 
     void FixedUpdate()
     {
         //endPosition.position = springObj.position;
-        Vector3 endPoint = (SpringRB.position - transform.localPosition).normalized;
-        endPoint *= lenght;
+        Vector3 endPoint = (SpringRB.position - transform.position).normalized;
+        endPoint *= length;
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, transform.position + endPoint);
         //Sync the rotation 
@@ -50,5 +52,13 @@ public class AntennaScript : MonoBehaviour
         //Aim the visible geo at the spring target
         //GeoParent.transform.LookAt(springObj.position);
         //GeoParent.transform.Rotate(90f, 0f, 0f);
+    }
+
+    private void PlaceObjectCorrectLength()
+    {
+        Vector3 endPoint = (SpringRB.position - transform.position).normalized;
+        endPoint *= length;
+        springTarget.position = transform.position + endPoint;
+        SpringRB.position = transform.position + endPoint;
     }
 }
