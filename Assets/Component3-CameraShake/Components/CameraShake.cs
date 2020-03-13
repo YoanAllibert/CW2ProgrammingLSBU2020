@@ -48,6 +48,7 @@ public class CameraShake : MonoBehaviour
             z = 0f;
 
         offset = new Vector3(Mathf.PerlinNoise(passedTime, 0.0f), Mathf.PerlinNoise(passedTime, 2f), z);
+        offset -= new Vector3(0.5f, 0.5f, 0.5f);
     }
 
     private void ApplyOffset()
