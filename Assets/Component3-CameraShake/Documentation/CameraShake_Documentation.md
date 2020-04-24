@@ -16,6 +16,14 @@ In order to use the shake component, the camera *GameObject* needs to be the chi
 
 To instantiate a camera shake, call the public method Shake() from the CameraShake component. First, create a reference to the CameraShake script. Then, simply call the Shake() method, using four parameters: **Shake(float speed, float amplitude, float duration, bool useZAxis)**
 
+Example:
+```c#
+[SerializeField] private CameraShake shake;
+
+// This line goes inside a function
+shake.Shake(15f, 0.3f, 0.5f, true);
+```
+
 ### Call parameters
 
 * *float speed*: the speed at which the script scroll through the noise texture.
